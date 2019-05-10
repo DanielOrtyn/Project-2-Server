@@ -19,7 +19,7 @@ public class SaleItem {
 	@ManyToOne()
 	private User seller;
 	@ManyToOne()
-	private Image itemImg;
+	private Img itemImg;
 	@OneToMany()
 	private Bid currentBid;
 	private double minPrice;
@@ -32,7 +32,7 @@ public class SaleItem {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SaleItem(int saleId, User seller, Image itemImg, Bid currentBid,
+	public SaleItem(int saleId, User seller, Img itemImg, Bid currentBid,
 			double minPrice, long endDate, String title, String desc) {
 		super();
 		this.saleId = saleId;
@@ -61,11 +61,11 @@ public class SaleItem {
 		this.seller = seller;
 	}
 
-	public Image getItemImg() {
+	public Img getItemImg() {
 		return itemImg;
 	}
 
-	public void setItemImg(Image itemImg) {
+	public void setItemImg(Img itemImg) {
 		this.itemImg = itemImg;
 	}
 

@@ -21,7 +21,7 @@ public class User {
 	private String email;
 	private String postal;
 	@ManyToOne()
-	private Image profileImg;
+	private Img profileImg;
 	private double rating;
 	private long ratingCount;
 	
@@ -31,7 +31,7 @@ public class User {
 	}
 	
 	public User(int userId, String username, String password, String name,
-			String email, String postal, Image profileImg, double rating,
+			String email, String postal, Img profileImg, double rating,
 			long ratingCount) {
 		super();
 		this.userId = userId;
@@ -81,10 +81,10 @@ public class User {
 	public void setPostal(String postal) {
 		this.postal = postal;
 	}
-	public Image getProfileImg() {
+	public Img getProfileImg() {
 		return profileImg;
 	}
-	public void setProfileImg(Image profileImg) {
+	public void setProfileImg(Img profileImg) {
 		this.profileImg = profileImg;
 	}
 	public double getRating() {
