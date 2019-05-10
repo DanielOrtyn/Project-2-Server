@@ -22,6 +22,7 @@ public class Bid {
 	private User bidder;
 	@ManyToOne
 	private SaleItem saleItem;
+	
 	public Bid() {
 		super();
 		// TODO Auto-generated constructor stub

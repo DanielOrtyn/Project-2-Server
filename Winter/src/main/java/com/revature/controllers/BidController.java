@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.Bid;
 import com.revature.model.SaleItem;
+import com.revature.model.User;
 import com.revature.service.BidService;
 
 @RestController
@@ -36,14 +37,14 @@ public class BidController {
 		return bidService.save(b);
 	}
 	
-	@GetMapping("bidder/{id}")
-	public List<Bid> findByBidderId(@PathVariable int id) {
-		return bidService.findByBidderid(id);
+	@PostMapping("findByBidder")
+	public List<Bid> findByBidderId(@RequestBody User bidder) {
+		return bidService.findByBidder(bidder);
 	}
 	
 	@GetMapping("saleitem")
 	public List<Bid> findBySaleItem(@RequestBody SaleItem si) {
-		return bidService.findBySaleitem(si);
+		return bidService.findBySaleItem(si);
 	}
 		
 }

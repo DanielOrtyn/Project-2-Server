@@ -9,7 +9,7 @@ import com.revature.model.Category;
 import com.revature.model.SaleItem;
 import com.revature.model.User;
 
-public interface SaleItemRepo extends JpaRepository<SaleItem, Integer> {
+public interface SaleItemRepo extends JpaRepository<SaleItem, Long> {
 	List<SaleItem> findByTitle(String title);
 
 	List<SaleItem> findBySeller(User seller);
@@ -26,12 +26,12 @@ public interface SaleItemRepo extends JpaRepository<SaleItem, Integer> {
 
 	List<SaleItem> findByCategory(Category category);
 	
-	@Query("FROM SaleItem item WHERE item.endDate >= :startDate AND bid.endDate >= :endDate")
+	@Query("FROM SaleItem item WHERE item.endDate >= :startDate AND item.endDate >= :endDate")
 	List<SaleItem> findByItemsWithEndDateRange(long startDate, long endDate);
 
 	@Query("FROM SaleItem item WHERE item.endDate >= :startDate")
 	List<SaleItem> findByItemsWithEndDateAfter(long startDate);
 
-	@Query("FROM SaleItem item WHERE bid.endDate >= :endDate")
+	@Query("FROM SaleItem item WHERE item.endDate >= :endDate")
 	List<SaleItem> findByItemsWithEndDateBefore(long endDate);
 }

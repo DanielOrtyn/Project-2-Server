@@ -17,7 +17,7 @@ public class SaleItemService {
 	@Autowired
 	private SaleItemRepo saleItemRepo;
 
-	public SaleItem findById(int id) {
+	public SaleItem findById(long id) {
 		Optional<SaleItem> item = saleItemRepo.findById(id);
 		
 		return item.isPresent()? item.get(): null;
@@ -35,8 +35,7 @@ public class SaleItemService {
 		return saleItemRepo.findBySeller(seller);
 	}
 
-	public List<SaleItem> findByItemsSellingForRange(double highPrice,
-			double lowPrice) {
+	public List<SaleItem> findByItemsSellingForRange(double lowPrice, double highPrice) {
 		return saleItemRepo.findByItemsSellingForRange(highPrice, lowPrice);
 	}
 
@@ -62,5 +61,13 @@ public class SaleItemService {
 
 	public List<SaleItem> findByItemsWithEndDateBefore(long endDate) {
 		return saleItemRepo.findByItemsWithEndDateBefore(endDate);
+	}
+
+	public SaleItem createSaleItem(SaleItem saleItem) {
+		return saleItemRepo.save(saleItem);
+	}
+
+	public SaleItem updateSaleItem(SaleItem saleItem) {
+		return saleItemRepo.save(saleItem);
 	}
 }
