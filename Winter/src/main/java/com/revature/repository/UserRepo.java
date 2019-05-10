@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.revature.model.User;
 
-public interface UserRepo extends JpaRepository<User, Integer> {
+public interface UserRepo extends JpaRepository<User, Long> {
 	List<User> findByUsername(String username);
 
 	List<User> findByName(String name);

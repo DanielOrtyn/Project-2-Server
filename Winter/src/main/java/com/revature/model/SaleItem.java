@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,17 +16,19 @@ public class SaleItem {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int saleId;
+	private long saleId;
 	@ManyToOne()
 	private User seller;
 	@ManyToOne()
 	private Img itemImg;
-	@OneToMany()
+	@OneToOne()
 	private Bid currentBid;
 	private double minPrice;
 	private long endDate;
 	private String title;
-	private String desc;
+	private String description;
+	@ManyToOne()
+	private Category category;
 
 	public SaleItem() {
 		super();
@@ -33,7 +36,7 @@ public class SaleItem {
 	}
 
 	public SaleItem(int saleId, User seller, Img itemImg, Bid currentBid,
-			double minPrice, long endDate, String title, String desc) {
+			double minPrice, long endDate, String title, String description) {
 		super();
 		this.saleId = saleId;
 		this.seller = seller;
@@ -42,14 +45,14 @@ public class SaleItem {
 		this.minPrice = minPrice;
 		this.endDate = endDate;
 		this.title = title;
-		this.desc = desc;
+		this.description = description;
 	}
 
-	public int getSaleId() {
+	public long getSaleId() {
 		return saleId;
 	}
 
-	public void setSaleId(int saleId) {
+	public void setSaleId(long saleId) {
 		this.saleId = saleId;
 	}
 
@@ -101,18 +104,26 @@ public class SaleItem {
 		this.title = title;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	@Override
 	public String toString() {
 		return "SaleItem [saleId=" + saleId + ", minPrice=" + minPrice
-				+ ", endDate=" + endDate + ", title=" + title + ", desc=" + desc
+				+ ", endDate=" + endDate + ", title=" + title + ", description=" + description
 				+ "]";
 	}
 }

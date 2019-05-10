@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.model.Bid;
 import com.revature.model.SaleItem;
+import com.revature.model.User;
 import com.revature.repository.BidRepo;
 
 @Service
@@ -19,7 +20,7 @@ public class BidService {
 		return bidRepo.findAll();
 	}
 	
-	public Optional<Bid> findById(int id) {
+	public Optional<Bid> findById(long id) {
 		return bidRepo.findById(id);
 	}
 	
@@ -27,11 +28,11 @@ public class BidService {
 		return bidRepo.save(b);
 	}
 	
-	public List<Bid> findByBidderid(int id){
-		return bidRepo.findByBidderid(id);
+	public List<Bid> findByBidder(User bidder){
+		return bidRepo.findByBidder(bidder);
 	}
 	
-	public List<Bid> findBySaleitem(SaleItem si){
-		return bidRepo.findBySaleitem(si);
+	public List<Bid> findBySaleItem(SaleItem si){
+		return bidRepo.findBySaleItem(si);
 	}
 }
