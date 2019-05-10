@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.Bid;
 import com.revature.model.SaleItem;
-import com.revature.services.BidService;
+import com.revature.service.BidService;
 
 @RestController
 @RequestMapping("bid") 

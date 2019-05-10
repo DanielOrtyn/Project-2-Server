@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.Category;
-import com.revature.services.CategoryService;
+import com.revature.service.CategoryService;
 
 @RestController
 @RequestMapping("category") 
