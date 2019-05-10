@@ -1,0 +1,34 @@
+<!DOCTYPE hibernatHe-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0/EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- JDBC -->
+		<property name="hibernate.connection.username">DanielOrtyn</property>
+		<property name="hibernate.connection.password">6John!=4Goldie</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://danielortyn1904revature.cszyxxn3mi4a.us-east-1.rds.amazonaws.com:5432/DanielOrtyn1904Revature</property>
+		
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.default.schema">public</property>
+
+		<!-- ADDITIONAL HIBERNATE OPTIONS -->
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="hibernate.connection.show_sql">true</property>
+		<property name="hibernate.connection.format_sql">true</property>
+
+		<property name="hibernate.connection.pool_size">10</property>
+
+		<!--
+			CREATE		drop all existing tables and then hibernate creates your schema 
+			Validate	checks to make sure the schema is as expected
+			Update		hibernate will not delete anything it will only add to your schema
+			None		hibernate will not do anything to the schema automatically 
+		-->
+		<property name="hibernate.hbm2ddl.auto">create</property>
+		<mapping class="com.revature.model.Actor"/>
+		<mapping class="com.revature.model.Director"/>
+		<mapping class="com.revature.model.Movie"/>
+		<mapping class="com.revature.model.Plot"/>
+	</session-factory>
+</hibernate-configuration>
+	
