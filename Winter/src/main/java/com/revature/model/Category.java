@@ -21,6 +21,11 @@ public class Category {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Category(String name) {
+		super();
+		this.name = name;
+	}
+	
 	public Category(long categoryId, String name) {
 		super();
 		this.categoryId = categoryId;
@@ -41,6 +46,11 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [categoryId=" + categoryId + ", name=" + name + "]";
 	}
 	
 	

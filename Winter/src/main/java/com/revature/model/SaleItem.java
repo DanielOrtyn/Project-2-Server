@@ -35,6 +35,18 @@ public class SaleItem {
 		// TODO Auto-generated constructor stub
 	}
 
+	public SaleItem(User seller, Img itemImg, Bid currentBid,
+			double minPrice, long endDate, String title, String description) {
+		super();
+		this.seller = seller;
+		this.itemImg = itemImg;
+		this.currentBid = currentBid;
+		this.minPrice = minPrice;
+		this.endDate = endDate;
+		this.title = title;
+		this.description = description;
+	}
+
 	public SaleItem(int saleId, User seller, Img itemImg, Bid currentBid,
 			double minPrice, long endDate, String title, String description) {
 		super();

@@ -29,6 +29,20 @@ public class User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public User(String username, String password, String name,
+			String email, String postal, Img profileImg, double rating,
+			long ratingCount) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.postal = postal;
+		this.profileImg = profileImg;
+		this.rating = rating;
+		this.ratingCount = ratingCount;
+	}
 	
 	public User(int userId, String username, String password, String name,
 			String email, String postal, Img profileImg, double rating,

@@ -23,6 +23,12 @@ public class Img {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Img(String url, String title) {
+		super();
+		this.url = url;
+		this.title = title;
+	}
+
 	public Img(long imgId, String url, String title) {
 		super();
 		this.imgId = imgId;

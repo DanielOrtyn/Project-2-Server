@@ -27,6 +27,13 @@ public class Bid {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public Bid(double currentBidPrice, double maxBidPrice, User bidder, SaleItem saleItem) {
+		super();
+		this.currentBidPrice = currentBidPrice;
+		this.maxBidPrice = maxBidPrice;
+		this.bidder = bidder;
+		this.saleItem = saleItem;
+	}
 	public Bid(long bidId, double currentBidPrice, double maxBidPrice, User bidder, SaleItem saleItem) {
 		super();
 		this.bidId = bidId;
