@@ -3,6 +3,7 @@ package com.revature.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.model.Img;
@@ -10,19 +11,18 @@ import com.revature.repository.ImgRepo;
 
 @Service
 public class ImgService {
-
+		@Autowired
 		private ImgRepo imgRepo;
 
 		public List<Img> findAll() {
 			return imgRepo.findAll();
 		}
 		
-		public Img findById(long id) {
-			Optional<Img> item = imgRepo.findById(id);
-			return item.isPresent() ? item.get() : null;
+		public Optional<Img> findById(long id) {
+			return imgRepo.findById(id);
 		}
 		
-		public Img save(Img img) {
-			return imgRepo.save(img);
+		public Img save(Img i) {
+			return imgRepo.save(i);
 		}
 }
