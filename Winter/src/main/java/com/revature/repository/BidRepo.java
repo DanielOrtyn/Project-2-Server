@@ -10,5 +10,4 @@ import com.revature.model.User;
 
 public interface BidRepo extends JpaRepository<Bid, Long>{
 	List<Bid> findByBidder(User bidder);
-	List<Bid> findBySaleItem(SaleItem si);
 }

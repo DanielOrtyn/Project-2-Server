@@ -33,18 +33,13 @@ public class BidController {
 	}
 	
 	@PostMapping()
-	public Bid save(Bid b) {
+	public Bid save(@RequestBody Bid b) {
 		return bidService.save(b);
 	}
 	
 	@PostMapping("findByBidder")
 	public List<Bid> findByBidderId(@RequestBody User bidder) {
-		return bidService.findByBidder(bidder);
-	}
-	
-	@GetMapping("saleitem")
-	public List<Bid> findBySaleItem(@RequestBody SaleItem si) {
-		return bidService.findBySaleItem(si);
-	}
 		
+		return bidService.findByBidder(bidder);
+	}	
 }

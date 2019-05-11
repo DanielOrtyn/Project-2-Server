@@ -30,9 +30,5 @@ public class BidService {
 	
 	public List<Bid> findByBidder(User bidder){
 		return bidRepo.findByBidder(bidder);
-	}
-	
-	public List<Bid> findBySaleItem(SaleItem si){
-		return bidRepo.findBySaleItem(si);
-	}
+	}	
 }

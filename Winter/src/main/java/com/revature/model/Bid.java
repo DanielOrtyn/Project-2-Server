@@ -20,27 +20,27 @@ public class Bid {
 	private double maxBidPrice;
 	@ManyToOne
 	private User bidder;
-	@ManyToOne
-	private SaleItem saleItem;
+	
+	private long saleItemId;
 	
 	public Bid() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Bid(double currentBidPrice, double maxBidPrice, User bidder, SaleItem saleItem) {
+	public Bid(double currentBidPrice, double maxBidPrice, User bidder, long saleItemId) {
 		super();
 		this.currentBidPrice = currentBidPrice;
 		this.maxBidPrice = maxBidPrice;
 		this.bidder = bidder;
-		this.saleItem = saleItem;
+		this.setSaleItemId(saleItemId);
 	}
-	public Bid(long bidId, double currentBidPrice, double maxBidPrice, User bidder, SaleItem saleItem) {
+	public Bid(long bidId, double currentBidPrice, double maxBidPrice, User bidder, long saleItemId) {
 		super();
 		this.bidId = bidId;
 		this.currentBidPrice = currentBidPrice;
 		this.maxBidPrice = maxBidPrice;
 		this.bidder = bidder;
-		this.saleItem = saleItem;
+		this.setSaleItemId(saleItemId);
 	}
 	public long getBidId() {
 		return bidId;
@@ -66,11 +66,10 @@ public class Bid {
 	public void setBidder(User bidder) {
 		this.bidder = bidder;
 	}
-	public SaleItem getSaleItem() {
-		return saleItem;
+	public long getSaleItemId() {
+		return saleItemId;
 	}
-	public void setSaleItem(SaleItem saleItem) {
-		this.saleItem = saleItem;
+	public void setSaleItemId(long saleItemId) {
+		this.saleItemId = saleItemId;
 	}
-	
 }
