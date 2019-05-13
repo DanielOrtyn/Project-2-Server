@@ -42,11 +42,6 @@ public class UserController {
 		return userService.findByName(name);
 	}
 
-	@PostMapping("auth")
-	public User authUser(@RequestBody UserAuthBody userAuth) {
-		return userService.authUser(userAuth.username, userAuth.password);
-	}
-
 	@PostMapping()
 	public User createUser(@RequestBody User user) {
 		return userService.createUser(user);
