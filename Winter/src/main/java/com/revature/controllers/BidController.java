@@ -1,7 +1,6 @@
 package com.revature.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.model.Bid;
-import com.revature.model.SaleItem;
 import com.revature.model.User;
 import com.revature.service.BidService;
 
