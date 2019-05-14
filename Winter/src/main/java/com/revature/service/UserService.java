@@ -37,12 +37,8 @@ public class UserService {
 		return userRepo.findByName(name);
 	}
 
-	public User authUser(String username, String password) {
-		List<User> matchingUsers = userRepo.authUser(username, password);
-		if (matchingUsers.size() != 1) {
-			return null;
-		}
-		return matchingUsers.get(0);
+	public User login(String username, String password) {
+		return userRepo.findByUsernameAndPassword(username, password);
 	}
 	
 	public User createUser(User user) {

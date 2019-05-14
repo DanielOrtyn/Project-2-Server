@@ -9,5 +9,5 @@ import com.revature.model.SaleItem;
 import com.revature.model.User;
 
 public interface BidRepo extends JpaRepository<Bid, Long>{
-	List<Bid> findByBidder(User bidder);
+	public List<Bid> findByBidder(User bidder);
 }

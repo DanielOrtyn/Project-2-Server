@@ -8,10 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import com.revature.model.User;
 
 public interface UserRepo extends JpaRepository<User, Long> {
-	List<User> findByUsername(String username);
+	public List<User> findByUsername(String username);
 
-	List<User> findByName(String name);
-
-	@Query("FROM User user WHERE user.username = :username AND user.password = :password")
-	List<User> authUser(String username, String password);
+	public List<User> findByName(String name);
+	
+	public User findByUsernameAndPassword(String username, String password);
 }
