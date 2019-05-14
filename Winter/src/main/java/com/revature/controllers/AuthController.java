@@ -22,7 +22,7 @@ public class AuthController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("login")
+	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody UserAuthBody credentials, HttpServletRequest req) {
 		User user = userService.login(credentials.username, credentials.password);
 		if (user != null) {
