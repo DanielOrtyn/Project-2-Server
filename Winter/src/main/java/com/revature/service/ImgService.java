@@ -18,8 +18,8 @@ public class ImgService {
 			return imgRepo.findAll();
 		}
 		
-		public Optional<Img> findById(long id) {
-			return imgRepo.findById(id);
+		public Img findById(long id) {
+			return imgRepo.getOne(id);
 		}
 		
 		public Img save(Img i) {
