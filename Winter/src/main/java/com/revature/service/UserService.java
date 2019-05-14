@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.model.User;
 import com.revature.repository.UserRepo;
+import com.revature.util.RedactUtil;
 
 @Service
 public class UserService {
@@ -38,9 +39,12 @@ public class UserService {
 	}
 
 	public User login(String username, String password) {
-		return userRepo.findByUsernameAndPassword(username, password);
+		User returnedUser = userRepo.findByUsernameAndPassword(username,
+				password);
+		RedactUtil.redactUser(returnedUser);
+		return returnedUser;
 	}
-	
+
 	public User createUser(User user) {
 		return userRepo.save(user);
 	}

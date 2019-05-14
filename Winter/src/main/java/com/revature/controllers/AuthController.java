@@ -1,6 +1,5 @@
 package com.revature.controllers;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +22,14 @@ public class AuthController {
 	private UserService userService;
 
 	@PostMapping("login")
-	public ResponseEntity<User> login(@RequestBody UserAuthBody credentials, HttpServletRequest req) {
-		User user = userService.login(credentials.username, credentials.password);
+	public ResponseEntity<User> login(@RequestBody UserAuthBody credentials,
+			HttpServletRequest req) {
+		User user = userService.login(credentials.username,
+				credentials.password);
+		System.out.println(user);
 		if (user != null) {
 			req.getSession().setAttribute("user", user);
-			return new ResponseEntity<User>(user, HttpStatus.CREATED);
+			return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
 		} else {
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
