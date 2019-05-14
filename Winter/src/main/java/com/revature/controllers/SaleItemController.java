@@ -38,7 +38,7 @@ public class SaleItemController {
 		return saleItemService.findByTitle(title);
 	}
 
-	@GetMapping("seller")
+	@PostMapping("seller")
 	public List<SaleItem> findByTitle(@RequestBody User seller) {
 		return saleItemService.findBySeller(seller);
 	}
@@ -59,7 +59,7 @@ public class SaleItemController {
 		return saleItemService.findByItemsSellingForLessThen(highPrice);
 	}
 
-	@GetMapping("category")
+	@PostMapping("category")
 	public List<SaleItem> findByCategory(@RequestBody Category category) {
 		return saleItemService.findByCategory(category);
 	}
