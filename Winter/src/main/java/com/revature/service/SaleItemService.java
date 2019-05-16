@@ -10,6 +10,7 @@ import com.revature.model.Category;
 import com.revature.model.SaleItem;
 import com.revature.model.User;
 import com.revature.repository.SaleItemRepo;
+import com.revature.util.TimeUtil;
 
 @Service
 public class SaleItemService {
@@ -19,14 +20,14 @@ public class SaleItemService {
 
 	public SaleItem findById(long id) {
 		Optional<SaleItem> item = saleItemRepo.findById(id);
-		
-		return item.isPresent()? item.get(): null;
+
+		return item.isPresent() ? item.get() : null;
 	}
-	
+
 	public List<SaleItem> findAll() {
 		return saleItemRepo.findAll();
 	}
-	
+
 	public List<SaleItem> findByTitle(String title) {
 		return saleItemRepo.findByTitle(title);
 	}
@@ -35,7 +36,8 @@ public class SaleItemService {
 		return saleItemRepo.findBySeller(seller);
 	}
 
-	public List<SaleItem> findByItemsSellingForRange(double lowPrice, double highPrice) {
+	public List<SaleItem> findByItemsSellingForRange(double lowPrice,
+			double highPrice) {
 		return saleItemRepo.findByItemsSellingForRange(highPrice, lowPrice);
 	}
 
@@ -46,12 +48,37 @@ public class SaleItemService {
 	public List<SaleItem> findByItemsSellingForLessThen(double highPrice) {
 		return saleItemRepo.findByItemsSellingForLessThen(highPrice);
 	}
-
+	
 	public List<SaleItem> findByCategory(Category category) {
 		return saleItemRepo.findByCategory(category);
 	}
+	
+	public List<SaleItem> findByTextSearch(String searchString) {
+		return saleItemRepo.searchByTextContent(searchString);
+	}
+	
+	public List<SaleItem> findByCategoryAndTextSearch(Category category,
+			String searchString) {
+		return saleItemRepo.searchByCategoryAndTextContent(category,
+				searchString.toLowerCase());
+	}
 
-	public List<SaleItem> findByItemsWithEndDateRange(long startDate, long endDate) {
+	public List<SaleItem> findActiveByCategory(Category category) {
+		return saleItemRepo.findActiveByCategory(category, TimeUtil.GetTimeCount());
+	}
+	
+	public List<SaleItem> findActiveByTextSearch(String searchString) {
+		return saleItemRepo.searchActiveByTextContent(searchString,TimeUtil.GetTimeCount());
+	}
+	
+	public List<SaleItem> findActiveByCategoryAndTextSearch(Category category,
+			String searchString) {
+		return saleItemRepo.searchActiveByCategoryAndTextContent(category,
+				searchString.toLowerCase(),TimeUtil.GetTimeCount());
+	}
+	
+	public List<SaleItem> findByItemsWithEndDateRange(long startDate,
+			long endDate) {
 		return saleItemRepo.findByItemsWithEndDateRange(startDate, endDate);
 	}
 

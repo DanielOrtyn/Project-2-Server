@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.model.Category;
 import com.revature.model.SaleItem;
 import com.revature.model.User;
+import com.revature.model.requestbody.CategoryAndTextSearch;
 import com.revature.service.SaleItemService;
 
 @RestController
@@ -27,7 +28,7 @@ public class SaleItemController {
 	public SaleItem findByIdTitle(@PathVariable long id) {
 		return saleItemService.findById(id);
 	}
-	
+
 	@GetMapping()
 	public List<SaleItem> findAll() {
 		return saleItemService.findAll();
@@ -50,33 +51,87 @@ public class SaleItemController {
 	}
 
 	@GetMapping("price/lowPrice/{lowPrice}")
-	public List<SaleItem> findByItemsSellingForMoreThen(double lowPrice) {
+	public List<SaleItem> findByItemsSellingForMoreThen(@PathVariable double lowPrice) {
 		return saleItemService.findByItemsSellingForMoreThen(lowPrice);
 	}
 
 	@GetMapping("price/highPrice/{highPrice}")
-	public List<SaleItem> findByItemsSellingForLessThen(double highPrice) {
+	public List<SaleItem> findByItemsSellingForLessThen(@PathVariable double highPrice) {
 		return saleItemService.findByItemsSellingForLessThen(highPrice);
 	}
 
-	@PostMapping("category")
+	@PostMapping("search/category")
 	public List<SaleItem> findByCategory(@RequestBody Category category) {
 		return saleItemService.findByCategory(category);
 	}
 
+	@PostMapping("search/text")
+	public List<SaleItem> findByText(@RequestBody CategoryAndTextSearch searchItems) {
+		System.out.println(searchItems.searchString);
+		return saleItemService.findByTextSearch(searchItems.searchString);
+	}
+
+	@PostMapping("search/category/text")
+	public List<SaleItem> findByCategoryAndInText(
+			@RequestBody CategoryAndTextSearch searchItems) {
+		
+		List<SaleItem> saleList;
+		if(searchItems.searchString.length() == 0) {
+			saleList = saleItemService.findByCategory(searchItems.category);
+		}
+		else {
+			saleList = saleItemService.findByCategoryAndTextSearch(searchItems.category,
+					searchItems.searchString);
+		}
+
+		return saleList;
+	}
+	
+	@PostMapping("search/active/category")
+	public List<SaleItem> findActiveByCategory(@RequestBody Category category) {
+		return saleItemService.findActiveByCategory(category);
+	}
+	
+	@GetMapping("search/active/text/")
+	public List<SaleItem> findActiveByText() {
+		return this.findActiveByText("");
+	}
+
+	@GetMapping("search/active/text/{searchString}")
+	public List<SaleItem> findActiveByText(@PathVariable String searchString) {
+		System.out.println(searchString);
+		return saleItemService.findActiveByTextSearch(searchString);
+	}
+
+	@PostMapping("search/active/category/text")
+	public List<SaleItem> findActiveByCategoryAndInText(
+			@RequestBody CategoryAndTextSearch searchItems) {
+		
+		List<SaleItem> saleList;
+		if(searchItems.searchString.length() == 0) {
+			saleList = saleItemService.findActiveByCategory(searchItems.category);
+		}
+		else {
+			saleList = saleItemService.findActiveByCategoryAndTextSearch(searchItems.category,
+					searchItems.searchString);
+		}
+
+		return saleList;
+	}
+
 	@GetMapping("saleEndDate/startDate/{startDate}/endDate/{endDate}")
-	public List<SaleItem> findByItemsWithEndDateRange(long startDate,
-			long endDate) {
+	public List<SaleItem> findByItemsWithEndDateRange(@PathVariable long startDate,
+			@PathVariable long endDate) {
 		return saleItemService.findByItemsWithEndDateRange(startDate, endDate);
 	}
 
 	@GetMapping("saleEndDate/startDate/{startDate}")
-	public List<SaleItem> findByItemsWithEndDateAfter(long startDate) {
+	public List<SaleItem> findByItemsWithEndDateAfter(@PathVariable long startDate) {
 		return saleItemService.findByItemsWithEndDateAfter(startDate);
 	}
 
 	@GetMapping("saleEndDate/endDate/{endDate}")
-	public List<SaleItem> findByItemsWithEndDateBefore(long endDate) {
+	public List<SaleItem> findByItemsWithEndDateBefore(@PathVariable long endDate) {
 		return saleItemService.findByItemsWithEndDateBefore(endDate);
 	}
 
