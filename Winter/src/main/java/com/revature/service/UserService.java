@@ -41,7 +41,6 @@ public class UserService {
 	public User login(String username, String password) {
 		User returnedUser = userRepo.findByUsernameAndPassword(username,
 				password);
-		RedactUtil.redactUser(returnedUser);
 		return returnedUser;
 	}
 
