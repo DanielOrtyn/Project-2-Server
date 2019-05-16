@@ -11,6 +11,12 @@ import com.revature.model.User;
 
 public interface SaleItemRepo extends JpaRepository<SaleItem, Long> {
 	public List<SaleItem> findByTitle(String title);
+	
+	@Query("FROM SaleItem item WHERE item.endDate >= :currentDate")
+	public List<SaleItem> findAllActiveSales(long currentDate);
+	
+	@Query("FROM SaleItem item WHERE item.endDate >= :currentDate ORDER BY item.currentBid.currentBidPrice")
+	public List<SaleItem> findAllActiveSalesOrderPrice(long currentDate);
 
 	public List<SaleItem> findBySeller(User seller);
 
