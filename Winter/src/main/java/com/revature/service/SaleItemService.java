@@ -146,7 +146,10 @@ public class SaleItemService {
 				currentUser, saleItem.getSaleId());
 		newBid = bidRepo.save(newBid);
 		saleItem.setCurrentBid(newBid);
-		return saleItemRepo.save(saleItem);
+		SaleItem item = saleItemRepo.save(saleItem);
+		newBid.setSaleItemId(item.getSaleId());
+		
+		return item;
 	}
 
 	public ResponseEntity<SaleItem> updateSaleItem(SaleItem itemUpdate,

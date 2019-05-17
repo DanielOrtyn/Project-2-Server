@@ -153,6 +153,7 @@ public class SaleItemController {
 	}
 
 	@PostMapping()
+	@Transactional
 	public SaleItem createSaleItem(@RequestBody SaleItem saleItem,
 			HttpServletRequest req) {
 		User currentUser = (User) req.getSession().getAttribute("user");
