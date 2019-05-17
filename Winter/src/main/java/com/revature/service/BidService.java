@@ -41,39 +41,47 @@ public class BidService {
 			Bid previousBid = previousBids.get(0);
 			double newBidPrice = previousBid.getMaxBidPrice();
 			if (b.getMaxBidPrice() > previousBid.getCurrentBidPrice()) {
-				newBidPrice = previousBid.getMaxBidPrice();
+				newBidPrice = b.getMaxBidPrice();
 			} else {
 				newBidPrice = previousBid.getCurrentBidPrice();
 			}
 			previousBid.setMaxBidPrice(newBidPrice);
 			b = previousBid;
-		}
-		else {
+		} else {
 			b = bidRepo.save(b);
 		}
 
 		Optional<SaleItem> itemSale = saleItemRepo.findById(b.getSaleItemId());
 		if (itemSale.isPresent()) {
 			Bid currentSaleBid = itemSale.get().getCurrentBid();
-
-			// check if bid already exists
-			// and therefore have been delt with via resolution of earlier bids
-			if (currentSaleBid.getBidId() == b.getBidId()) {
-				return new ResponseEntity<>(b, HttpStatus.OK);
-			}
-
-			// determine winning bid
-			if (currentSaleBid.getMaxBidPrice() >= b.getMaxBidPrice()) {
-				currentSaleBid.setCurrentBidPrice(b.getMaxBidPrice());
-				b.setCurrentBidPrice(b.getMaxBidPrice());
-				return new ResponseEntity<>(b, HttpStatus.OK);
+			Bid lowBid;
+			Bid highBid;
+			if (currentSaleBid.getMaxBidPrice() < b.getMaxBidPrice()) {
+				highBid = b;
+				lowBid = currentSaleBid;
 			} else {
-				currentSaleBid
-						.setCurrentBidPrice(currentSaleBid.getMaxBidPrice());
-				b.setCurrentBidPrice(currentSaleBid.getMaxBidPrice() + 1);
-				itemSale.get().setCurrentBid(b);
-				return new ResponseEntity<>(b, HttpStatus.OK);
+				highBid = currentSaleBid;
+				lowBid = b;
 			}
+			
+			// check if bids have equal max price
+			if (highBid.getMaxBidPrice() == lowBid.getMaxBidPrice()) {
+				highBid.setCurrentBidPrice(lowBid.getMaxBidPrice());
+				lowBid.setCurrentBidPrice(lowBid.getMaxBidPrice());
+			} else {
+				// increment high bid's price to 1 dollar more, unless it's
+				// maximum is in cents
+				// then increment it only as much as allowed
+				if (highBid.getMaxBidPrice() > lowBid.getMaxBidPrice() + 1)
+					highBid.setCurrentBidPrice(lowBid.getMaxBidPrice() + 1);
+				else
+					highBid.setCurrentBidPrice(highBid.getMaxBidPrice());
+
+				lowBid.setCurrentBidPrice(lowBid.getMaxBidPrice());
+			}
+
+			itemSale.get().setCurrentBid(highBid);
+			return new ResponseEntity<>(b, HttpStatus.OK);
 		}
 		return null;
 	}
