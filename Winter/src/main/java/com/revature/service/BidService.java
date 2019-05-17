@@ -67,7 +67,6 @@ public class BidService {
 			// check if bids have equal max price
 			if (highBid.getMaxBidPrice() == lowBid.getMaxBidPrice()) {
 				highBid.setCurrentBidPrice(lowBid.getMaxBidPrice());
-				lowBid.setCurrentBidPrice(lowBid.getMaxBidPrice());
 			} else {
 				// increment high bid's price to 1 dollar more, unless it's
 				// maximum is in cents
@@ -76,8 +75,6 @@ public class BidService {
 					highBid.setCurrentBidPrice(lowBid.getMaxBidPrice() + 1);
 				else
 					highBid.setCurrentBidPrice(highBid.getMaxBidPrice());
-
-				lowBid.setCurrentBidPrice(lowBid.getMaxBidPrice());
 			}
 
 			itemSale.get().setCurrentBid(highBid);
