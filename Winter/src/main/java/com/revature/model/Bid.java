@@ -72,4 +72,10 @@ public class Bid {
 	public void setSaleItemId(long saleItemId) {
 		this.saleItemId = saleItemId;
 	}
+	@Override
+	public String toString() {
+		return "Bid [bidId=" + bidId + ", currentBidPrice=" + currentBidPrice
+				+ ", maxBidPrice=" + maxBidPrice + ", bidder=" + bidder
+				+ ", saleItemId=" + saleItemId + "]";
+	}
 }

@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,23 +37,27 @@ public class BidController {
 		Bid foundBid = bidService.findById(id).get();
 
 		User currentUser = (User) req.getSession().getAttribute("user");
-		if (foundBid != null && (currentUser == null || (currentUser
-				.getUserId() == foundBid.getBidder().getUserId()))) {
-			return new ResponseEntity<Bid>(HttpStatus.FORBIDDEN);
+		if (foundBid == null || currentUser == null || (currentUser
+				.getUserId() != foundBid.getBidder().getUserId())) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<Bid>(foundBid, HttpStatus.OK);
+		return new ResponseEntity<>(foundBid, HttpStatus.OK);
 	}
 
-	@PostMapping()
+	@PutMapping()
+	@Transactional
 	public ResponseEntity<Bid> save(@RequestBody Bid b,
 			HttpServletRequest req) {
 		User currentUser = (User) req.getSession().getAttribute("user");
-		if (b != null && (currentUser == null
-				|| (currentUser.getUserId() == b.getBidder().getUserId()))) {
-			return new ResponseEntity<Bid>(HttpStatus.FORBIDDEN);
+		if (b == null || currentUser == null
+				|| (currentUser.getUserId() != b.getBidder().getUserId())) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-
-		return new ResponseEntity<Bid>(bidService.save(b), HttpStatus.OK);
+		ResponseEntity<Bid> response = bidService.save(b);
+		if(response==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return response;
 	}
 
 	@PostMapping("findByBidder")
@@ -60,10 +66,11 @@ public class BidController {
 
 		User currentUser = (User) req.getSession().getAttribute("user");
 		if (bidder == null || currentUser == null
-				|| (currentUser.getUserId() == bidder.getUserId())) {
-			return new ResponseEntity<List<Bid>>(HttpStatus.FORBIDDEN);
+				|| (currentUser.getUserId() != bidder.getUserId())) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		
-		return new ResponseEntity<List<Bid>>(bidService.findByBidder(bidder), HttpStatus.OK);
+
+		return new ResponseEntity<>(bidService.findByBidder(bidder),
+				HttpStatus.OK);
 	}
 }

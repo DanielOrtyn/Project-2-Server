@@ -27,7 +27,7 @@ public class UserController {
 	public ResponseEntity<User> findById(@PathVariable long id,
 			HttpServletRequest req) {
 		User currentUser = (User) req.getSession().getAttribute("user");
-		if (currentUser == null || (currentUser.getUserId() == id)) {
+		if (currentUser == null || (currentUser.getUserId() != id)) {
 			return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
 		User updatedUser = userService.findById(id);
@@ -59,7 +59,7 @@ public class UserController {
 			HttpServletRequest req) {
 		User currentUser = (User) req.getSession().getAttribute("user");
 		if (currentUser == null
-				|| (currentUser.getUserId() == user.getUserId())) {
+				|| (currentUser.getUserId() != user.getUserId())) {
 			return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
 		User updatedUser = userService.updateUser(user);

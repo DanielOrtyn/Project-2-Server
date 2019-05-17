@@ -2,7 +2,11 @@ package com.revature.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.model.Bid;
 import com.revature.model.Category;
 import com.revature.model.SaleItem;
 import com.revature.model.User;
@@ -40,8 +45,14 @@ public class SaleItemController {
 	}
 
 	@PostMapping("seller")
-	public List<SaleItem> findByTitle(@RequestBody User seller) {
-		return saleItemService.findBySeller(seller);
+	public ResponseEntity<List<SaleItem>> findBySeller(@RequestBody User seller,
+			HttpServletRequest req) {
+		User currentUser = (User) req.getSession().getAttribute("user");
+		if (currentUser == null
+				|| (currentUser.getUserId() != seller.getUserId())) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		return new ResponseEntity<>(saleItemService.findBySeller(seller), HttpStatus.OK);
 	}
 
 	@GetMapping("price/lowPrice/{lowPrice}/highPrice/{highPrice}")
