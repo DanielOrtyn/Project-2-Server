@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +53,8 @@ public class SaleItemController {
 				|| (currentUser.getUserId() != seller.getUserId())) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(saleItemService.findBySeller(seller), HttpStatus.OK);
+		return new ResponseEntity<>(saleItemService.findBySeller(seller),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("price/lowPrice/{lowPrice}/highPrice/{highPrice}")
@@ -151,13 +153,22 @@ public class SaleItemController {
 	}
 
 	@PostMapping()
-	public SaleItem createSaleItem(@RequestBody SaleItem saleItem) {
-		return saleItemService.createSaleItem(saleItem);
+	public SaleItem createSaleItem(@RequestBody SaleItem saleItem,
+			HttpServletRequest req) {
+		User currentUser = (User) req.getSession().getAttribute("user");
+		saleItem.setSeller(currentUser);
+		return saleItemService.createSaleItem(saleItem, currentUser);
 	}
 
 	@PatchMapping()
-	public SaleItem updateSaleItem(@RequestBody SaleItem saleItem) {
-		return saleItemService.updateSaleItem(saleItem);
+	@Transactional
+	public ResponseEntity<SaleItem> updateSaleItem(@RequestBody SaleItem saleItem,
+			HttpServletRequest req) {
+		User currentUser = (User) req.getSession().getAttribute("user");
+		if(currentUser==null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		return saleItemService.updateSaleItem(saleItem, currentUser);
 	}
 
 	@GetMapping("topPriced/{itemCount}")

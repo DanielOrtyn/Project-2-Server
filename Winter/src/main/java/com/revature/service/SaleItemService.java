@@ -6,13 +6,22 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.revature.model.Bid;
 import com.revature.model.Category;
+import com.revature.model.Img;
 import com.revature.model.SaleItem;
 import com.revature.model.User;
+import com.revature.repository.BidRepo;
 import com.revature.repository.CategoryRepo;
+import com.revature.repository.ImgRepo;
 import com.revature.repository.SaleItemRepo;
 import com.revature.util.TimeUtil;
 
@@ -23,6 +32,10 @@ public class SaleItemService {
 	private SaleItemRepo saleItemRepo;
 	@Autowired
 	private CategoryRepo categoryRepo;
+	@Autowired
+	private ImgRepo imgRepo;
+	@Autowired
+	private BidRepo bidRepo;
 
 	public SaleItem findById(long id) {
 		Optional<SaleItem> item = saleItemRepo.findById(id);
@@ -128,11 +141,46 @@ public class SaleItemService {
 		return itemListList;
 	}
 
-	public SaleItem createSaleItem(SaleItem saleItem) {
+	public SaleItem createSaleItem(SaleItem saleItem, User currentUser) {
+		Bid newBid = new Bid(saleItem.getMinPrice(), saleItem.getMinPrice(),
+				currentUser, saleItem.getSaleId());
+		newBid = bidRepo.save(newBid);
+		saleItem.setCurrentBid(newBid);
 		return saleItemRepo.save(saleItem);
 	}
 
-	public SaleItem updateSaleItem(SaleItem saleItem) {
-		return saleItemRepo.save(saleItem);
+	public ResponseEntity<SaleItem> updateSaleItem(SaleItem itemUpdate,
+			User currentUser) {
+		SaleItem dbItem = saleItemRepo.getOne(itemUpdate.getSaleId());
+		if (dbItem.getSeller().getUserId() != currentUser.getUserId()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		if (itemUpdate.getItemImg() != null) {
+			Img itemImage = itemUpdate.getItemImg();
+			// check if image needs to be created
+			if (itemImage.getImgId() < 1 && itemImage.getUrl() != null) {
+				itemImage = imgRepo.save(itemImage);
+			}
+			dbItem.setItemImg(itemImage);
+		}
+		if (itemUpdate.getMinPrice() > 1.0) {
+			itemUpdate.setMinPrice(itemUpdate.getMinPrice());
+		}
+		if (itemUpdate.getEndDate() > 0) {
+			itemUpdate.setEndDate(itemUpdate.getEndDate());
+		}
+		itemUpdate.setTitle(itemUpdate.getTitle());
+		itemUpdate.setDescription(itemUpdate.getDescription());
+		if (itemUpdate.getCategory() != null) {
+			Category itemCat = itemUpdate.getCategory();
+			// check if image needs to be created
+			if (itemCat.getCategoryId() < 1 && itemCat.getName() != null
+					&& itemCat.getName().isEmpty() == false) {
+				itemCat = categoryRepo.save(itemCat);
+			}
+			dbItem.setCategory(itemCat);
+		}
+
+		return new ResponseEntity<>(dbItem, HttpStatus.ACCEPTED);
 	}
 }
