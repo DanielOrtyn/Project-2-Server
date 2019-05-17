@@ -31,21 +31,26 @@ public class BidService {
 	}
 
 	public ResponseEntity<Bid> save(Bid b) {
-		List<Bid> previousBids = bidRepo.findUsingBidderAndSaleItem(
-				b.getSaleItemId(), b.getBidder());
+		List<Bid> previousBids = bidRepo
+				.findUsingBidderAndSaleItem(b.getSaleItemId(), b.getBidder());
 		// Resolve conflict with earlier bids
 		if (previousBids.size() > 1) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		if (previousBids.size() == 1) {
 			Bid previousBid = previousBids.get(0);
-			previousBid.setMaxBidPrice(b.getMaxBidPrice());
+			double newBidPrice = previousBid.getMaxBidPrice();
+			if (b.getMaxBidPrice() > previousBid.getCurrentBidPrice()) {
+				newBidPrice = previousBid.getMaxBidPrice();
+			} else {
+				newBidPrice = previousBid.getCurrentBidPrice();
+			}
+			previousBid.setMaxBidPrice(newBidPrice);
 			b = previousBid;
-		}
-		else {
+		} else {
 			b = bidRepo.save(b);
 		}
-		
+
 		Optional<SaleItem> itemSale = saleItemRepo.findById(b.getSaleItemId());
 		if (itemSale.isPresent()) {
 			Bid currentSaleBid = itemSale.get().getCurrentBid();
@@ -53,17 +58,18 @@ public class BidService {
 			// check if bid already exists
 			// and therefore have been delt with via resolution of earlier bids
 			if (currentSaleBid.getBidId() == b.getBidId()) {
-				return new ResponseEntity<>(b,HttpStatus.OK);
+				return new ResponseEntity<>(b, HttpStatus.OK);
 			}
-			
+
 			// determine winning bid
 			if (currentSaleBid.getMaxBidPrice() >= b.getMaxBidPrice()) {
 				currentSaleBid.setCurrentBidPrice(b.getMaxBidPrice());
 				b.setCurrentBidPrice(b.getMaxBidPrice());
 				return new ResponseEntity<>(b, HttpStatus.OK);
 			} else {
-				currentSaleBid.setMaxBidPrice(currentSaleBid.getMaxBidPrice());
-				b.setCurrentBidPrice(currentSaleBid.getMaxBidPrice()+1);
+				currentSaleBid
+						.setCurrentBidPrice(currentSaleBid.getMaxBidPrice());
+				b.setCurrentBidPrice(currentSaleBid.getMaxBidPrice() + 1);
 				itemSale.get().setCurrentBid(b);
 				return new ResponseEntity<>(b, HttpStatus.OK);
 			}
