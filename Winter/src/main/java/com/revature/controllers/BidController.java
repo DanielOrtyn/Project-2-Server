@@ -49,10 +49,10 @@ public class BidController {
 	public ResponseEntity<Bid> save(@RequestBody Bid b,
 			HttpServletRequest req) {
 		User currentUser = (User) req.getSession().getAttribute("user");
-		if (b == null || currentUser == null
-				|| (currentUser.getUserId() != b.getBidder().getUserId())) {
+		if (b == null || currentUser == null) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
+		b.setBidder(currentUser);
 		ResponseEntity<Bid> response = bidService.save(b);
 		if(response==null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

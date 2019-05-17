@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class UserController {
 	}
 
 	@PatchMapping()
+	@Transactional
 	public ResponseEntity<User> updateUser(@RequestBody User user,
 			HttpServletRequest req) {
 		User currentUser = (User) req.getSession().getAttribute("user");
@@ -62,7 +64,6 @@ public class UserController {
 				|| (currentUser.getUserId() != user.getUserId())) {
 			return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
-		User updatedUser = userService.updateUser(user);
-		return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
+		return userService.updateUser(user);
 	}
 }

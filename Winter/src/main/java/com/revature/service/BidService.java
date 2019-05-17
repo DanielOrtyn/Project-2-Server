@@ -47,7 +47,8 @@ public class BidService {
 			}
 			previousBid.setMaxBidPrice(newBidPrice);
 			b = previousBid;
-		} else {
+		}
+		else {
 			b = bidRepo.save(b);
 		}
 
