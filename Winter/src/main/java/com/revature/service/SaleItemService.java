@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,7 +107,7 @@ public class SaleItemService {
 	public List<SaleItem> findByItemsWithEndDateBefore(long endDate) {
 		return saleItemRepo.findByItemsWithEndDateBefore(endDate);
 	}
-
+	
 	public List<List<SaleItem>> findByTopPriceItemByCategoryItems(
 			int itemCount) {
 		List<Category> categoryList = categoryRepo.findAll();
@@ -185,5 +182,15 @@ public class SaleItemService {
 		}
 
 		return new ResponseEntity<>(dbItem, HttpStatus.ACCEPTED);
+	}
+	
+	public List<SaleItem> findByItemsEndedwithAltered(long thisDate, boolean value){
+		List<SaleItem> askedFor = saleItemRepo.findByItemsEndedWithAltered(thisDate, value);
+		return askedFor;
+		
+	}
+	
+	public SaleItem serverUpdateItem(SaleItem toUpdate) {
+		return saleItemRepo.save(toUpdate);	
 	}
 }

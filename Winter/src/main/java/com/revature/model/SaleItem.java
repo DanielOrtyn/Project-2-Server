@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +28,7 @@ public class SaleItem {
 	private String description;
 	@ManyToOne()
 	private Category category;
-
+	private boolean Alerted;
 	public SaleItem() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -45,6 +44,7 @@ public class SaleItem {
 		this.endDate = endDate;
 		this.title = title;
 		this.description = description;
+		this.Alerted = false;
 	}
 
 	public SaleItem(int saleId, User seller, Img itemImg, Bid currentBid,
@@ -58,6 +58,7 @@ public class SaleItem {
 		this.endDate = endDate;
 		this.title = title;
 		this.description = description;
+		this.Alerted = false;
 	}
 
 	public long getSaleId() {
@@ -137,5 +138,13 @@ public class SaleItem {
 		return "SaleItem [saleId=" + saleId + ", minPrice=" + minPrice
 				+ ", endDate=" + endDate + ", title=" + title + ", description=" + description
 				+ "]";
+	}
+
+	public boolean isAlerted() {
+		return Alerted;
+	}
+
+	public void setAlerted(boolean alerted) {
+		Alerted = alerted;
 	}
 }
