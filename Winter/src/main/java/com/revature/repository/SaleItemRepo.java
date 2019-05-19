@@ -68,4 +68,7 @@ public interface SaleItemRepo extends JpaRepository<SaleItem, Long> {
 
 	@Query("FROM SaleItem item WHERE item.endDate >= :endDate")
 	public List<SaleItem> findByItemsWithEndDateBefore(long endDate);
+	
+	@Query("FROM SaleItem item WHERE item.endDate <= :currentDate AND item.Alerted = :value")
+	public List<SaleItem> findByItemsEndedWithAltered(long currentDate, boolean value);
 }

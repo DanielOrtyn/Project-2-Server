@@ -3,8 +3,6 @@ package com.revature.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.ManyToOne;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,7 @@ import com.revature.model.Img;
 import com.revature.model.User;
 import com.revature.repository.ImgRepo;
 import com.revature.repository.UserRepo;
-import com.revature.util.RedactUtil;
+
 
 @Service
 public class UserService {

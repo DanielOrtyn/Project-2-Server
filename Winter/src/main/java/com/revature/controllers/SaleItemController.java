@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.model.Bid;
 import com.revature.model.Category;
 import com.revature.model.SaleItem;
 import com.revature.model.User;
@@ -177,4 +177,18 @@ public class SaleItemController {
 			@PathVariable int itemCount) {
 		return saleItemService.findByTopPriceItemByCategoryItems(itemCount);
 	}
+	@GetMapping("getSendTo/{value}")
+	public List<SaleItem> findByItemsEndedwithAltered(@PathVariable boolean value){
+		List<SaleItem> askedFor = saleItemService.findByItemsEndedwithAltered(new Date().getTime(), value);
+		return askedFor;
+	}
+	@PostMapping("serverUpdate/{key}")
+	public SaleItem serverUpdateSaleItem(@RequestBody SaleItem saleItem, @PathVariable String key) {
+		if(key.equals("kjfndfnal;sdfl;asdnflknq8-1-483!^Noifhwkdaf%^(qrnkandsfknf"))return saleItemService.serverUpdateItem(saleItem);
+		else {
+			return null;
+		}
+	}
+	
+	
 }
