@@ -184,7 +184,7 @@ public class SaleItemController {
 	}
 	@PostMapping("serverUpdate/{key}")
 	public SaleItem serverUpdateSaleItem(@RequestBody SaleItem saleItem, @PathVariable String key) {
-		if(key.equals("kjfndfnal;sdfl;asdnflknq8-1-483!^Noifhwkdaf%^(qrnkandsfknf"))return saleItemService.serverUpdateItem(saleItem);
+		if(key.equals("kjfndfnalsdflasdnflknq81483Noifhwkdafqrnkandsfknf"))return saleItemService.serverUpdateItem(saleItem);
 		else {
 			return null;
 		}

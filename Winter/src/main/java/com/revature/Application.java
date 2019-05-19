@@ -40,7 +40,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Application {
 	
-	final private boolean RUNEMAILS = true;
+	final private boolean RUNEMAILS = false;
 	final private boolean EXTRADETAILS = false;
 	
 	@Bean
