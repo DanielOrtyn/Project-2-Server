@@ -1,0 +1,21 @@
+package com.revature.util;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.revature.model.User;
+
+@Component
+public class AuthUtil {
+	public User getCurrentUser(HttpServletRequest req) {
+		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		return (User) req.getSession().getAttribute("user");
+	}
+	) {
+		User user = userService.login(credentials.username, credentials.password);
+		if (user != null) {
+			req.getSession().setAttribute("user", user);
+}

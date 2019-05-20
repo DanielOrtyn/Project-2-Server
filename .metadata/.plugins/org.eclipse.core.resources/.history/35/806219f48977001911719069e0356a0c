@@ -1,0 +1,5 @@
+package com.revature.model.requestbody;
+
+public class CategoryAndTextSearch {
+
+}

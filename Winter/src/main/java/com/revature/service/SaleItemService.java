@@ -139,10 +139,23 @@ public class SaleItemService {
 	}
 
 	public SaleItem createSaleItem(SaleItem saleItem, User currentUser) {
+		// create starting bid for item
 		Bid newBid = new Bid(saleItem.getMinPrice(), saleItem.getMinPrice(),
 				currentUser, saleItem.getSaleId());
 		newBid = bidRepo.save(newBid);
 		saleItem.setCurrentBid(newBid);
+		
+		// create image if necessary
+		if (saleItem.getItemImg() != null) {
+			Img itemImage = saleItem.getItemImg();
+			// check if image needs to be created
+			if (itemImage.getImgId() < 1 && itemImage.getUrl() != null) {
+				itemImage = imgRepo.save(itemImage);
+			}
+			saleItem.setItemImg(itemImage);
+		}
+		
+		
 		SaleItem item = saleItemRepo.save(saleItem);
 		newBid.setSaleItemId(item.getSaleId());
 		
