@@ -1,0 +1,96 @@
+package com.revature.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.revature.model.Bid;
+import com.revature.model.SaleItem;
+import com.revature.model.User;
+import com.revature.repository.BidRepo;
+import com.revature.repository.SaleItemRepo;
+
+@Service
+public class BidService {
+	@Autowired
+	private BidRepo bidRepo;
+	@Autowired
+	private SaleItemRepo saleItemRepo;
+
+	public List<Bid> findAll() {
+		return bidRepo.findAll();
+	}
+
+	public Optional<Bid> findById(long id) {
+		return bidRepo.findById(id);
+	}
+
+	public ResponseEntity<Bid> save(Bid b) {
+		Optional<SaleItem> itemSale = saleItemRepo.findById(b.getSaleItemId());
+		System.out.println("1");
+		System.out.println("1");
+		if (itemSale.isPresent()) {
+			Bid currentSaleBid = itemSale.get().getCurrentBid();
+
+			// Resolve conflict with earlier bids
+			List<Bid> previousBids = bidRepo.findUsingBidderAndSaleItem(
+					b.getSaleItemId(), b.getBidder());
+			if (previousBids.size() > 1) {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
+			System.out.println("2");
+			System.out.println("2");
+			// check if bid is by the same user
+			if (currentSaleBid.getBidder().getUserId() == b.getBidder()
+					.getUserId()) {
+				currentSaleBid.setMaxBidPrice(b.getMaxBidPrice());
+				return new ResponseEntity<>(bidRepo.save(currentSaleBid),
+						HttpStatus.OK);
+			}
+			System.out.println("3");
+			System.out.println("3");
+			// if current winning bid and new bid do not have the same bidder,
+			// then resolve new bidder's earlier bids
+			if (previousBids.size() == 1) {
+				Bid previousBid = previousBids.get(0);
+				previousBid.setMaxBidPrice(b.getMaxBidPrice());
+				b = previousBid;
+			}
+			System.out.println("4");
+			System.out.println("4");
+			// check if current bid is winning bid
+			if (currentSaleBid.getMaxBidPrice() >= b.getMaxBidPrice()) {
+				currentSaleBid.setMaxBidPrice(b.getMaxBidPrice());
+				b.setMaxBidPrice(b.getMaxBidPrice());
+				bidRepo.save(currentSaleBid);
+				System.out.println("55");
+				System.out.println("55");
+				return new ResponseEntity<>(bidRepo.save(b), HttpStatus.OK);
+			} else {
+				currentSaleBid.setMaxBidPrice(currentSaleBid.getMaxBidPrice());
+				b.setMaxBidPrice(currentSaleBid.getMaxBidPrice());
+				System.out.println("6");
+				System.out.println("6");
+				bidRepo.save(currentSaleBid);
+				System.out.println("1");
+				b = bidRepo.save(b);
+				System.out.println("2");
+				itemSale.get().setCurrentBid(b);
+				System.out.println("3");
+				saleItemRepo.save(itemSale.get());
+				System.out.println("4");
+				return new ResponseEntity<>(b, HttpStatus.OK);
+			}
+		}
+		return null;
+	}
+
+	public List<Bid> findByBidder(User bidder) {
+		return bidRepo.findByBidder(bidder);
+	}
+}

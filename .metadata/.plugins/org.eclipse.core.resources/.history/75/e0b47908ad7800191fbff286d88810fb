@@ -1,0 +1,83 @@
+package com.revature.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.ManyToOne;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.revature.model.Img;
+import com.revature.model.User;
+import com.revature.repository.UserRepo;
+import com.revature.util.RedactUtil;
+
+@Service
+public class UserService {
+
+	@Autowired
+	private UserRepo userRepo;
+
+	public User findById(long id) {
+		Optional<User> item = userRepo.findById(id);
+
+		return item.isPresent() ? item.get() : null;
+	}
+
+	public List<User> findAll() {
+		return userRepo.findAll();
+	}
+
+	public User findByUsername(String username) {
+		List<User> matchingUsers = userRepo.findByUsername(username);
+		if (matchingUsers.size() != 1) {
+			return null;
+		}
+		return matchingUsers.get(0);
+	}
+
+	public List<User> findByName(String name) {
+		return userRepo.findByName(name);
+	}
+
+	public User login(String username, String password) {
+		User returnedUser = userRepo.findByUsernameAndPassword(username,
+				password);
+		return returnedUser;
+	}
+
+	public User createUser(User user) {
+		return userRepo.save(user);
+	}
+
+	public ResponseEntity<User> updateUser(User updateUser) {
+		User dbUser = userRepo.getOne(updateUser.getUserId());
+		if (dbUser == null) {
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+		}
+		if (updateUser.getUsername() != null && updateUser.getUsername() != "")
+			dbUser.setUsername(updateUser.getUsername());
+		if (updateUser.getPassword() != null && updateUser.getPassword() != "")
+			dbUser.setPassword(updateUser.getPassword());
+		if (updateUser.getName() != null && updateUser.getName() != "")
+			dbUser.setName(updateUser.getName());
+		if (updateUser.getEmail() != null && updateUser.getEmail() != "")
+			dbUser.setEmail(updateUser.getEmail());
+		if (updateUser.getPostal() != null && updateUser.getPostal() != "")
+			dbUser.setPostal(updateUser.getPostal());
+//		if (updateUser.getProfileImg() != null) {
+//			Img userImage = updateUser.getProfileImg();
+//			// check if image needs to be created
+//			if (userImage.getImgId() < 1 && userImage.getUrl() != null) {
+//				userImage = imgRepo.save(userImage);
+//			}
+//			dbUser.setItemImg(itemImage);
+//		}
+//
+//		private Img profileImg;
+		return new ResponseEntity<User>(dbUser, HttpStatus.ACCEPTED);
+	}
+}
