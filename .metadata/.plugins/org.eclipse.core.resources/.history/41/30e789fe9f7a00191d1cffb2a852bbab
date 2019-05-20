@@ -107,20 +107,21 @@ public class SaleItemController {
 		return saleItemService.findActiveByCategory(category);
 	}
 
-	@GetMapping("search/active/text/")
+	@GetMapping("search/active")
 	public List<SaleItem> findActive() {
 		return this.findActiveByText("");
 	}
 
 	@GetMapping("search/active/text/{searchString}")
 	public List<SaleItem> findActiveByText(@PathVariable String searchString) {
-		List<SaleItem> saleList = saleItemService.findActiveByTextSearch(searchString);
-		return saleList;
+		System.out.println(searchString);
+		return saleItemService.findActiveByTextSearch(searchString);
 	}
 
 	@PostMapping("search/active/category/text")
 	public List<SaleItem> findActiveByCategoryAndInText(
 			@RequestBody CategoryAndTextSearch searchItems) {
+
 		List<SaleItem> saleList;
 		if (searchItems.searchString.length() == 0) {
 			saleList = saleItemService
@@ -162,10 +163,10 @@ public class SaleItemController {
 
 	@PatchMapping()
 	@Transactional
-	public ResponseEntity<SaleItem> updateSaleItem(
-			@RequestBody SaleItem saleItem, HttpServletRequest req) {
+	public ResponseEntity<SaleItem> updateSaleItem(@RequestBody SaleItem saleItem,
+			HttpServletRequest req) {
 		User currentUser = (User) req.getSession().getAttribute("user");
-		if (currentUser == null) {
+		if(currentUser==null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		return saleItemService.updateSaleItem(saleItem, currentUser);
@@ -176,23 +177,18 @@ public class SaleItemController {
 			@PathVariable int itemCount) {
 		return saleItemService.findByTopPriceItemByCategoryItems(itemCount);
 	}
-
 	@GetMapping("getSendTo/{value}")
-	public List<SaleItem> findByItemsEndedwithAltered(
-			@PathVariable boolean value) {
-		List<SaleItem> askedFor = saleItemService
-				.findByItemsEndedwithAltered(new Date().getTime(), value);
+	public List<SaleItem> findByItemsEndedwithAltered(@PathVariable boolean value){
+		List<SaleItem> askedFor = saleItemService.findByItemsEndedwithAltered(new Date().getTime(), value);
 		return askedFor;
 	}
-
 	@PostMapping("serverUpdate/{key}")
-	public SaleItem serverUpdateSaleItem(@RequestBody SaleItem saleItem,
-			@PathVariable String key) {
-		if (key.equals("kjfndfnalsdflasdnflknq81483Noifhwkdafqrnkandsfknf"))
-			return saleItemService.serverUpdateItem(saleItem);
+	public SaleItem serverUpdateSaleItem(@RequestBody SaleItem saleItem, @PathVariable String key) {
+		if(key.equals("kjfndfnalsdflasdnflknq81483Noifhwkdafqrnkandsfknf"))return saleItemService.serverUpdateItem(saleItem);
 		else {
 			return null;
 		}
 	}
-
+	
+	
 }

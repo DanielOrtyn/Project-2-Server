@@ -107,20 +107,22 @@ public class SaleItemController {
 		return saleItemService.findActiveByCategory(category);
 	}
 
-	@GetMapping("search/active/text/")
+	@GetMapping("search/active")
 	public List<SaleItem> findActive() {
 		return this.findActiveByText("");
 	}
 
 	@GetMapping("search/active/text/{searchString}")
 	public List<SaleItem> findActiveByText(@PathVariable String searchString) {
-		List<SaleItem> saleList = saleItemService.findActiveByTextSearch(searchString);
-		return saleList;
+		System.out.println(searchString);
+		return saleItemService.findActiveByTextSearch(searchString);
 	}
 
 	@PostMapping("search/active/category/text")
 	public List<SaleItem> findActiveByCategoryAndInText(
 			@RequestBody CategoryAndTextSearch searchItems) {
+		System.out.println(searchItems);
+
 		List<SaleItem> saleList;
 		if (searchItems.searchString.length() == 0) {
 			saleList = saleItemService
