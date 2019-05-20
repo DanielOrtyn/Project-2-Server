@@ -114,6 +114,7 @@ public class SaleItemController {
 
 	@GetMapping("search/active/text/{searchString}")
 	public List<SaleItem> findActiveByText(@PathVariable String searchString) {
+		System.out.println(searchString);
 		List<SaleItem> saleList = saleItemService.findActiveByTextSearch(searchString);
 		return saleList;
 	}
@@ -121,6 +122,8 @@ public class SaleItemController {
 	@PostMapping("search/active/category/text")
 	public List<SaleItem> findActiveByCategoryAndInText(
 			@RequestBody CategoryAndTextSearch searchItems) {
+		System.out.println(searchItems);
+
 		List<SaleItem> saleList;
 		if (searchItems.searchString.length() == 0) {
 			saleList = saleItemService
